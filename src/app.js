@@ -1,19 +1,45 @@
 import React, {Component} from 'react';
-import {View, Button} from 'react-native';
+import {Text, View, Button} from 'react-native';
 
 class App extends Component {
-  onPresentPress() {
+  constructor(props) {
+    super(props);
 
+    this.onPresentPress = this.onPresentPress.bind(this);
+    this.onViewPress = this.onViewPress.bind(this);
+  }
+
+  state = {
+    mode: null
+  };
+
+  onPresentPress() {
+    this.setState({
+      mode: 'presenter'
+    })
   }
 
   onViewPress() {
+    this.setState({
+      mode: 'viewer'
+    })
+  }
 
+  renderVideo() {
+    switch (this.state.mode) {
+      case 'presenter':
+        return <VideoPresenter />;
+      case 'viewer':
+        return <VideoViewer />;
+      default:
+        return <Text style={styles.text}>Please, select mode</Text>
+    }
   }
 
   render() {
     return (
       <View style={styles.mainView}>
-        <View style={styles.mainView}>
+        <View style={styles.headerView}>
           <Button
             title="Present"
             onPress={this.onPresentPress}
@@ -25,6 +51,9 @@ class App extends Component {
             style={styles.button}
           />
         </View>
+        <View style={styles.video}>
+          {this.renderVideo()}
+        </View>
       </View>
     )
   }
@@ -32,13 +61,27 @@ class App extends Component {
 
 const styles = {
   mainView: {
-
+    flex: 1,
+    flexDirection: 'column'
   },
   headerView: {
-
+    flex: 1,
+    width: null,
   },
   button: {
-
+    flex: 1,
+    paddingLeft: 20,
+    alignSelf: 'stretch'
+  },
+  text: {
+    color: '#000000',
+    fontSize: 18,
+    paddingTop: 15,
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
+  video: {
+    flex: 8
   }
 };
 
